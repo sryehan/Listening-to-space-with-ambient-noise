@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acoustic Imaging Lab Work — Shahariar Ryehan</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+};
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a18;
+  --ink2:#4a4a46;
+  --ink3:#8a8a84;
+  --ink4:#b8b8b0;
+  --paper:#faf9f6;
+  --paper2:#f2f1ec;
+  --paper3:#e8e7e0;
+  --rule:rgba(26,26,24,0.12);
+  --rule2:rgba(26,26,24,0.06);
+  --red:#c0392b;
+  --teal:#1a6b5a;
+  --amber:#b5620a;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.75;overflow-x:hidden}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:90;
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 4rem;height:52px;
+}
+.nav-id{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.05em;color:var(--ink3)}
+.nav-links{display:flex;gap:2.5rem}
+.nav-links a{font-size:0.78rem;font-weight:400;color:var(--ink3);text-decoration:none;letter-spacing:0.04em;transition:color .15s}
+.nav-links a:hover{color:var(--ink)}
+
+/* ── HERO ── */
+.hero{
+  max-width:1100px;margin:0 auto;
+  padding:7rem 4rem 5rem;
+  border-bottom:1px solid var(--rule);
+  display:grid;grid-template-columns:1fr 340px;gap:4rem;align-items:start;
+}
+.hero-kicker{
+  font-family:var(--mono);font-size:0.65rem;letter-spacing:0.14em;
+  color:var(--ink3);text-transform:uppercase;margin-bottom:1.5rem;
+}
+.hero h1{
+  font-family:var(--serif);font-size:clamp(2.2rem,4.5vw,3.8rem);
+  font-weight:400;line-height:1.1;letter-spacing:-0.01em;
+  margin-bottom:1.5rem;color:var(--ink);
+}
+.hero h1 em{font-style:italic;color:var(--red)}
+.hero-lead{font-size:0.95rem;color:var(--ink2);line-height:1.85;max-width:52ch;margin-bottom:2rem}
+.hero-meta{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--rule)}
+.meta-row{padding:0.7rem 0;border-bottom:1px solid var(--rule2);display:flex;flex-direction:column;gap:0.15rem}
+.meta-key{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;color:var(--ink4);text-transform:uppercase}
+.meta-val{font-size:0.8rem;color:var(--ink2)}
+.hero-aside{padding-top:0.5rem}
+.aside-block{border:1px solid var(--rule);padding:1.25rem 1.5rem;margin-bottom:1rem}
+.aside-label{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.12em;color:var(--ink3);text-transform:uppercase;margin-bottom:0.75rem}
+.stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:0.35rem 0;border-bottom:1px solid var(--rule2)}
+.stat-row:last-child{border-bottom:none}
+.stat-n{font-family:var(--serif);font-size:1.5rem;color:var(--ink)}
+.stat-d{font-size:0.72rem;color:var(--ink3)}
+
+/* ── LABS INDEX ── */
+.labs-index{max-width:1100px;margin:0 auto;padding:5rem 4rem}
+.index-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2.5rem;border-bottom:1px solid var(--rule);padding-bottom:0.75rem}
+.index-title{font-family:var(--serif);font-size:1.1rem;font-weight:400}
+.index-count{font-family:var(--mono);font-size:0.68rem;color:var(--ink3)}
+
+.lab-row{
+  display:grid;grid-template-columns:3.5rem 1fr auto;
+  gap:0 2rem;align-items:start;
+  padding:2rem 0;border-bottom:1px solid var(--rule2);
+  cursor:pointer;transition:background .15s;
+  margin:0 -1rem;padding-left:1rem;padding-right:1rem;
+}
+.lab-row:hover{background:var(--paper2)}
+.lab-n{font-family:var(--mono);font-size:0.65rem;color:var(--ink3);padding-top:0.25rem;letter-spacing:0.06em}
+.lab-body{}
+.lab-date{font-family:var(--mono);font-size:0.62rem;color:var(--ink4);margin-bottom:0.3rem;letter-spacing:0.06em}
+.lab-title{font-family:var(--serif);font-size:1.25rem;font-weight:400;margin-bottom:0.5rem;color:var(--ink)}
+.lab-desc{font-size:0.83rem;color:var(--ink2);line-height:1.7;max-width:60ch;margin-bottom:0.75rem}
+.lab-chips{display:flex;gap:0.35rem;flex-wrap:wrap}
+.chip{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.04em;color:var(--ink3);border:1px solid var(--rule);padding:0.15rem 0.5rem}
+.lab-arrow{font-size:1rem;color:var(--ink4);align-self:center;padding-right:0.5rem;transition:color .15s,transform .15s}
+.lab-row:hover .lab-arrow{color:var(--red);transform:translate(3px,-2px)}
+
+/* ── THEORY SECTION ── */
+.theory-wrap{background:var(--paper2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.theory-inner{max-width:1100px;margin:0 auto;padding:5rem 4rem}
+.theory-header{margin-bottom:3.5rem}
+.theory-header h2{font-family:var(--serif);font-size:1.9rem;font-weight:400;margin-bottom:0.5rem}
+.theory-header p{font-size:0.85rem;color:var(--ink2)}
+
+.theory-tabs{display:flex;gap:0;border-bottom:1px solid var(--rule);margin-bottom:3rem}
+.tab-btn{
+  font-family:var(--mono);font-size:0.68rem;letter-spacing:0.06em;
+  color:var(--ink3);padding:0.65rem 1.25rem;cursor:pointer;
+  border:none;background:none;border-bottom:2px solid transparent;
+  margin-bottom:-1px;transition:color .15s,border-color .15s;
+}
+.tab-btn.active{color:var(--ink);border-bottom-color:var(--red)}
+.tab-btn:hover:not(.active){color:var(--ink2)}
+
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* equation block */
+.eq-wrap{
+  border-left:2px solid var(--ink3);
+  padding:1rem 1.5rem;
+  background:var(--paper);
+  margin:1.5rem 0;
+  font-size:0.95rem;
+}
+.eq-note{font-size:0.75rem;color:var(--ink3);font-family:var(--sans);margin-top:0.5rem;font-style:italic}
+
+.theory-text{font-size:0.87rem;color:var(--ink2);line-height:1.85;margin-bottom:1rem;max-width:68ch}
+
+/* slider ui */
+.ctrl-block{background:var(--paper);border:1px solid var(--rule);padding:1.5rem;margin:1.5rem 0}
+.ctrl-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.ctrl-label{font-family:var(--mono);font-size:0.68rem;color:var(--ink2);min-width:9rem;letter-spacing:0.04em}
+input[type=range]{flex:1;min-width:120px;height:2px;appearance:none;-webkit-appearance:none;background:var(--rule);cursor:pointer}
+input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:12px;height:12px;background:var(--ink);border-radius:50%;cursor:pointer}
+.ctrl-val{font-family:var(--mono);font-size:0.72rem;color:var(--red);min-width:5rem;text-align:right}
+.viz-frame{height:180px;border-top:1px solid var(--rule2);margin-top:1rem;position:relative}
+canvas{width:100%;height:100%}
+.readout{
+  font-family:var(--mono);font-size:0.72rem;color:var(--teal);
+  background:rgba(26,107,90,0.05);border:1px solid rgba(26,107,90,0.15);
+  padding:0.6rem 1rem;margin-top:0.75rem;line-height:1.8;
+}
+
+/* result cards */
+.rcard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin:1.5rem 0}
+.rcard{background:var(--paper);padding:1rem 1.1rem}
+.rcard-v{font-family:var(--serif);font-size:1.6rem;color:var(--ink);line-height:1.1}
+.rcard-l{font-family:var(--mono);font-size:0.58rem;letter-spacing:0.1em;color:var(--ink3);text-transform:uppercase;margin-top:0.2rem}
+
+/* ── MODAL ── */
+.modal-bg{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(10,10,8,0.7);
+  overflow-y:auto;
+}
+.modal-bg.open{display:block}
+.modal-box{
+  max-width:860px;margin:5rem auto 4rem;
+  background:var(--paper);
+  border:1px solid var(--rule);
+}
+.modal-top{
+  padding:2.5rem 3rem;border-bottom:1px solid var(--rule);
+  display:flex;justify-content:space-between;align-items:start;gap:2rem;
+}
+.modal-top-text{}
+.modal-kicker{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.12em;color:var(--ink3);text-transform:uppercase;margin-bottom:0.5rem}
+.modal-top h2{font-family:var(--serif);font-size:1.7rem;font-weight:400;line-height:1.2;margin-bottom:0.6rem}
+.modal-top p{font-size:0.83rem;color:var(--ink2);line-height:1.75;max-width:56ch}
+.modal-close-btn{
+  background:none;border:1px solid var(--rule);color:var(--ink3);
+  width:2rem;height:2rem;cursor:pointer;font-size:0.9rem;
+  flex-shrink:0;transition:border-color .15s,color .15s;
+}
+.modal-close-btn:hover{border-color:var(--red);color:var(--red)}
+.modal-body{padding:2.5rem 3rem}
+
+.pdf-zone{margin-bottom:2.5rem}
+.pdf-zone-label{font-family:var(--mono);font-size:0.62rem;letter-spacing:0.12em;color:var(--ink3);text-transform:uppercase;margin-bottom:0.6rem}
+.pdf-frame-wrap{
+  height:500px;border:1px solid var(--rule);background:var(--paper2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.75rem;
+}
+.pdf-note-txt{font-size:0.78rem;color:var(--ink3);text-align:center;max-width:34ch;line-height:1.65}
+.pdf-fn{font-family:var(--mono);font-size:0.7rem;color:var(--ink3)}
+.upload-btn{
+  font-family:var(--mono);font-size:0.7rem;letter-spacing:0.05em;
+  color:var(--ink2);border:1px solid var(--rule);background:var(--paper);
+  padding:0.4rem 1rem;cursor:pointer;transition:border-color .15s,color .15s;
+}
+.upload-btn:hover{border-color:var(--ink);color:var(--ink)}
+input.pdf-file-in{display:none}
+iframe.pdf-embedded{width:100%;height:100%;border:none}
+
+/* ── ABOUT ── */
+.about-wrap{max-width:1100px;margin:0 auto;padding:5rem 4rem;border-top:1px solid var(--rule)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.about-grid h2{font-family:var(--serif);font-size:1.7rem;font-weight:400;margin-bottom:1.25rem}
+.about-grid p{font-size:0.85rem;color:var(--ink2);line-height:1.85;margin-bottom:0.9rem}
+.skills-wrap{margin-top:1.5rem;display:flex;gap:0.35rem;flex-wrap:wrap}
+.li-btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:#0a66c2;color:#fff;border:none;cursor:pointer;
+  padding:0.55rem 1.3rem;font-family:var(--sans);font-size:0.8rem;font-weight:400;
+  text-decoration:none;transition:background .15s;margin-top:1.5rem;
+}
+.li-btn:hover{background:#004182}
+.li-btn svg{flex-shrink:0}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--rule);
+  padding:1.75rem 4rem;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+}
+.ft-l{font-family:var(--mono);font-size:0.65rem;color:var(--ink4);letter-spacing:0.06em}
+.ft-r{display:flex;gap:2rem}
+.ft-r a{font-family:var(--mono);font-size:0.65rem;color:var(--ink3);text-decoration:none;letter-spacing:0.06em;transition:color .15s}
+.ft-r a:hover{color:var(--red)}
+
+@media(max-width:800px){
+  nav{padding:0 1.5rem}
+  .hero{grid-template-columns:1fr;gap:2.5rem;padding:4rem 1.5rem 3rem}
+  .hero-aside{display:none}
+  .labs-index,.theory-inner,.about-wrap{padding:3.5rem 1.5rem}
+  .about-grid{grid-template-columns:1fr;gap:2.5rem}
+  .modal-top,.modal-body{padding:1.75rem 1.5rem}
+  .modal-box{margin:0;min-height:100vh}
+  footer{padding:1.5rem;flex-direction:column;align-items:flex-start}
+  .lab-row{grid-template-columns:2.5rem 1fr auto}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-id">SR — Master WAVES</span>
+  <div class="nav-links">
+    <a href="#labs">Labs</a>
+    <a href="#theory">Theory</a>
+    <a href="#about">About</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-kicker">Final Semester · Acoustic Imaging</div>
+    <h1>Listening to<br>space with<br><em>ambient noise</em></h1>
+    <p class="hero-lead">
+      Three laboratory works from the Erasmus Mundus MSc WAVES programme, exploring passive and active acoustic imaging methods — from ambient noise cross-correlation to full waveform inversion via the adjoint-state method.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-row"><span class="meta-key">Institution</span><span class="meta-val">Aix-Marseille Université</span></div>
+      <div class="meta-row"><span class="meta-key">Programme</span><span class="meta-val">Erasmus Mundus MSc WAVES</span></div>
+      <div class="meta-row"><span class="meta-key">Author</span><span class="meta-val">Shahariar Ryehan</span></div>
+      <div class="meta-row"><span class="meta-key">Co-authors</span><span class="meta-val">Marti Arjona · Pranav Prakasan</span></div>
+      <div class="meta-row"><span class="meta-key">Semester</span><span class="meta-val">Autumn 2025</span></div>
+      <div class="meta-row"><span class="meta-key">Methods</span><span class="meta-val">DAS · FWI · Eigenvector BF</span></div>
+    </div>
+  </div>
+  <div class="hero-aside">
+    <div class="aside-block">
+      <div class="aside-label">At a glance</div>
+      <div class="stat-row"><span class="stat-n">32</span><span class="stat-d">MEMS microphones (Lab II)</span></div>
+      <div class="stat-row"><span class="stat-n">14</span><span class="stat-d">linear array elements (Lab I)</span></div>
+      <div class="stat-row"><span class="stat-n">50</span><span class="stat-d">noise realisations averaged</span></div>
+      <div class="stat-row"><span class="stat-n">2.44 cm</span><span class="stat-d">mean localization error</span></div>
+      <div class="stat-row"><span class="stat-n">0.98 m</span><span class="stat-d">near-field source range</span></div>
+    </div>
+    <div class="aside-block">
+      <div class="aside-label">Tools</div>
+      <div class="stat-row"><span class="stat-d" style="font-family:var(--mono);font-size:0.72rem;">MATLAB</span><span class="stat-d">signal processing</span></div>
+      <div class="stat-row"><span class="stat-d" style="font-family:var(--mono);font-size:0.72rem;">COMSOL</span><span class="stat-d">FEM validation</span></div>
+      <div class="stat-row"><span class="stat-d" style="font-family:var(--mono);font-size:0.72rem;">Helmholtz 2D</span><span class="stat-d">FWI forward solver</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- LABS INDEX -->
+<section class="labs-index" id="labs">
+  <div class="index-header">
+    <span class="index-title">Laboratory Reports</span>
+    <span class="index-count">3 experiments · click to expand</span>
+  </div>
+
+  <div class="lab-row" onclick="openModal('l1')">
+    <div class="lab-n">Lab&nbsp;I</div>
+    <div class="lab-body">
+      <div class="lab-date">30 December 2025</div>
+      <div class="lab-title">Acoustic Source Localization using a Linear Array</div>
+      <div class="lab-desc">Plane wave Bartlett processor, near-field point source beamforming, time-gating against room reflections, and Eigenvector noise-subspace filtering — all on a 14-element MEMS array.</div>
+      <div class="lab-chips">
+        <span class="chip">beamforming</span>
+        <span class="chip">near-field</span>
+        <span class="chip">eigenvector</span>
+        <span class="chip">MEMS</span>
+        <span class="chip">MATLAB</span>
+      </div>
+    </div>
+    <div class="lab-arrow">↗</div>
+  </div>
+
+  <div class="lab-row" onclick="openModal('l2')">
+    <div class="lab-n">Lab&nbsp;II</div>
+    <div class="lab-body">
+      <div class="lab-date">16 December 2025</div>
+      <div class="lab-title">Passive Imaging of a Scattering Cylinder using Ambient Noise</div>
+      <div class="lab-desc">Green's function retrieved from diffuse noise via Lobkis-Weaver cross-correlation, then DAS (TFM) beamforming used to locate a hidden aluminium cylinder — validated by manual geometry optimization.</div>
+      <div class="lab-chips">
+        <span class="chip">passive imaging</span>
+        <span class="chip">green's function</span>
+        <span class="chip">DAS / TFM</span>
+        <span class="chip">differential imaging</span>
+        <span class="chip">Welch</span>
+      </div>
+    </div>
+    <div class="lab-arrow">↗</div>
+  </div>
+
+  <div class="lab-row" onclick="openModal('l3')">
+    <div class="lab-n">Lab&nbsp;III</div>
+    <div class="lab-body">
+      <div class="lab-date">2025</div>
+      <div class="lab-title">Acoustic Full Waveform Inversion — Adjoint-State Method</div>
+      <div class="lab-desc">Iterative recovery of 2D subsurface velocity models by minimising an $\ell^2$ waveform misfit. Gradient computed cheaply via adjoint-state equations; L-BFGS optimiser; multi-scale frequency strategy to avoid cycle-skipping.</div>
+      <div class="lab-chips">
+        <span class="chip">FWI</span>
+        <span class="chip">adjoint-state</span>
+        <span class="chip">Helmholtz 2D</span>
+        <span class="chip">L-BFGS</span>
+        <span class="chip">Tikhonov regularisation</span>
+      </div>
+    </div>
+    <div class="lab-arrow">↗</div>
+  </div>
+</section>
+
+<!-- THEORY SLIDERS -->
+<div class="theory-wrap" id="theory">
+<div class="theory-inner">
+  <div class="theory-header">
+    <h2>Core theory — interactive</h2>
+    <p>Adjust the sliders to see how the key equations behave in real time.</p>
+  </div>
+
+  <div class="theory-tabs">
+    <button class="tab-btn active" onclick="switchTab('bf',this)">I · Beamforming</button>
+    <button class="tab-btn" onclick="switchTab('cc',this)">II · Cross-correlation</button>
+    <button class="tab-btn" onclick="switchTab('fwi',this)">III · FWI misfit</button>
+  </div>
+
+  <!-- TAB BF -->
+  <div class="tab-pane active" id="tab-bf">
+    <p class="theory-text">
+      The Bartlett (delay-and-sum) beamformer steers to direction $\theta$ by summing sensor signals after compensating travel-time delays. For a uniform linear array with element spacing $d$ and wavenumber $k = 2\pi f/c$, the output power is
+    </p>
+    <div class="eq-wrap">
+      $$P(\theta) = \left|\,\sum_{i=0}^{N-1} w_i\, e^{-\,j k d\, i \sin\theta}\,\right|^2$$
+      <div class="eq-note">Bartlett processor — incoherently averaged over the bandwidth $[f_{\min}, f_{\max}]$.</div>
+    </div>
+    <p class="theory-text">
+      The $-3\,\text{dB}$ beamwidth (Rayleigh criterion) is approximately $\Delta\theta \approx 2\arcsin\!\bigl(0.886\,\lambda / L\bigr)$, where $L = (N-1)d$ is the array aperture. Spatial aliasing (grating lobes) appears whenever $d > \lambda/2$.
+    </p>
+    <div class="ctrl-block">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Elements $N$</span>
+        <input type="range" id="bN" min="4" max="32" value="14" step="1" oninput="drawBF()">
+        <span class="ctrl-val" id="bNv">14</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Frequency $f$ (kHz)</span>
+        <input type="range" id="bF" min="1" max="10" value="5" step="0.5" oninput="drawBF()">
+        <span class="ctrl-val" id="bFv">5.0 kHz</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Pitch $d$ (cm)</span>
+        <input type="range" id="bD" min="2" max="10" value="5" step="0.5" oninput="drawBF()">
+        <span class="ctrl-val" id="bDv">5.0 cm</span>
+      </div>
+      <div class="viz-frame"><canvas id="cvBF"></canvas></div>
+      <div class="readout" id="rdBF">—</div>
+    </div>
+  </div>
+
+  <!-- TAB CC -->
+  <div class="tab-pane" id="tab-cc">
+    <p class="theory-text">
+      The Lobkis-Weaver relation (fluctuation-dissipation theorem applied to acoustics) states that in a perfectly diffuse field, the <em>time derivative</em> of the ensemble-averaged cross-correlation between two receivers recovers the causal Green's function:
+    </p>
+    <div class="eq-wrap">
+      $$\frac{d}{d\tau}\langle C_{ij}(\tau)\rangle \approx -G(\mathbf{r}_i,\mathbf{r}_j,\tau) + G(\mathbf{r}_j,\mathbf{r}_i,-\tau)$$
+      <div class="eq-note">Cross-correlation computed with energy normalisation in the frequency domain:  $\widetilde{C}_{ij}(\omega) = \widetilde{y}_i(\omega)\widetilde{y}_j^*(\omega)\,/\,\sqrt{E_i E_j}$.</div>
+    </div>
+    <p class="theory-text">
+      Averaging over $N_r$ independent noise realisations improves the signal-to-noise ratio as $\sqrt{N_r}$. The travel-time peak in $G$ occurs at $\tau_0 = r_{ij}/c$.
+    </p>
+    <div class="ctrl-block">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Realisations $N_r$</span>
+        <input type="range" id="cN" min="1" max="100" value="50" step="1" oninput="drawCC()">
+        <span class="ctrl-val" id="cNv">50</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Sensor distance $r$ (m)</span>
+        <input type="range" id="cD" min="0.10" max="0.60" value="0.52" step="0.01" oninput="drawCC()">
+        <span class="ctrl-val" id="cDv">0.52 m</span>
+      </div>
+      <div class="viz-frame"><canvas id="cvCC"></canvas></div>
+      <div class="readout" id="rdCC">—</div>
+    </div>
+  </div>
+
+  <!-- TAB FWI -->
+  <div class="tab-pane" id="tab-fwi">
+    <p class="theory-text">
+      FWI minimises the $\ell^2$ distance between observed waveforms $d^{\text{obs}}$ and those modelled from the current velocity model $m$:
+    </p>
+    <div class="eq-wrap">
+      $$J(m) = \tfrac{1}{2}\bigl\|d^{\text{obs}} - d^{\text{calc}}(m)\bigr\|^2, \qquad \frac{\partial J}{\partial m} = \sum_{\omega,s} \omega^2\,\text{Re}\!\left[u(\mathbf{x},\omega)\cdot q^*(\mathbf{x},\omega)\right]$$
+      <div class="eq-note">The gradient is the zero-lag cross-correlation of the forward wavefield $u$ and the adjoint wavefield $q$ — computed at cost of just two forward solves per source.</div>
+    </div>
+    <p class="theory-text">
+      A multi-scale strategy (low → high frequencies) avoids cycle-skipping. The cost function should decrease monotonically; noise raises the irreducible floor.
+    </p>
+    <div class="ctrl-block">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Velocity perturbation $\Delta c/c$</span>
+        <input type="range" id="fV" min="-30" max="30" value="10" step="1" oninput="drawFWI()">
+        <span class="ctrl-val" id="fVv">+10 %</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">Noise level $\sigma$</span>
+        <input type="range" id="fS" min="0" max="0.5" value="0.05" step="0.01" oninput="drawFWI()">
+        <span class="ctrl-val" id="fSv">0.05</span>
+      </div>
+      <div class="viz-frame"><canvas id="cvFWI"></canvas></div>
+      <div class="readout" id="rdFWI">—</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ABOUT -->
+<div class="about-wrap" id="about">
+  <div class="about-grid">
+    <div>
+      <h2>Shahariar Ryehan</h2>
+      <p>Erasmus Mundus MSc student in the WAVES programme (University of Coimbra · UPV Valencia · Aix-Marseille), currently on a research internship at Hahn-Schickard, Villingen-Schwenningen, Germany, developing a MEMS-based photoacoustic CO₂ sensor using WMS-2f detection.</p>
+      <p>My research spans acoustic sensing, MEMS design, nonlinear mathematical physics — soliton solutions, fractional calculus — and numerical simulation (COMSOL, MATLAB, Python).</p>
+      <div class="skills-wrap">
+        <span class="chip">COMSOL</span><span class="chip">MATLAB</span><span class="chip">Python</span>
+        <span class="chip">LabVIEW</span><span class="chip">WMS-2f</span><span class="chip">Lock-in amplifier</span>
+        <span class="chip">MEMS</span><span class="chip">Beamforming</span><span class="chip">FWI</span>
+        <span class="chip">solitons</span><span class="chip">fractional calculus</span>
+      </div>
+      <a class="li-btn" href="https://linkedin.com/in/shahariar-ryehan" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        Share on LinkedIn
+      </a>
+    </div>
+    <div>
+      <div class="rcard-grid">
+        <div class="rcard"><div class="rcard-v">32</div><div class="rcard-l">MEMS mics · Lab II</div></div>
+        <div class="rcard"><div class="rcard-v">14</div><div class="rcard-l">Array elements · Lab I</div></div>
+        <div class="rcard"><div class="rcard-v">2.44 cm</div><div class="rcard-l">Localization MAE</div></div>
+        <div class="rcard"><div class="rcard-v">50</div><div class="rcard-l">Noise realisations</div></div>
+        <div class="rcard"><div class="rcard-v">0.98 m</div><div class="rcard-l">Source range (NF)</div></div>
+        <div class="rcard"><div class="rcard-v">−3 cm</div><div class="rcard-l">Cylinder X offset</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="ft-l">© 2025 Shahariar Ryehan · Master WAVES · Erasmus Mundus</span>
+  <div class="ft-r">
+    <a href="mailto:sryehan@gmail.com">sryehan@gmail.com</a>
+    <a href="https://sryehan.com" target="_blank">sryehan.com</a>
+  </div>
+</footer>
+
+<!-- MODAL LAB I -->
+<div class="modal-bg" id="m-l1">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div class="modal-top-text">
+        <div class="modal-kicker">Lab I · 30 December 2025</div>
+        <h2>Acoustic Source Localization</h2>
+        <p>Linear array of 14 MEMS microphones, near-field Bartlett processor, time-gating, and Eigenvector beamforming in a reverberant room.</p>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('l1')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="pdf-zone">
+        <div class="pdf-zone-label">Report PDF</div>
+        <div class="pdf-frame-wrap" id="pfw-l1">
+          <div class="pdf-fn">Lab_I_Source_Localization.pdf</div>
+          <div class="pdf-note-txt">Upload your PDF here for inline preview, or link directly once hosted on GitHub Pages.</div>
+          <button class="upload-btn" onclick="document.getElementById('pfi-l1').click()">Choose PDF file</button>
+          <input class="pdf-file-in" type="file" accept=".pdf" id="pfi-l1" onchange="loadPDF(this,'l1')">
+        </div>
+      </div>
+
+      <p class="theory-text"><strong>Near-field condition.</strong> With array aperture $L = (N-1)d = 13 \times 0.05 = 0.65\,\text{m}$ and centre frequency $f_c = 5\,\text{kHz}$, the Fraunhofer distance is</p>
+      <div class="eq-wrap">
+        $$R_F = \frac{2L^2}{\lambda} = \frac{2 \times (0.65)^2}{343/5000} \approx 12.3\,\text{m}$$
+        <div class="eq-note">Since the source sits at $R \approx 1\,\text{m} \ll R_F$, a spherical-wave point-source model is mandatory.</div>
+      </div>
+      <p class="theory-text">The point-source steering vector that replaces the plane-wave phase ramp is</p>
+      <div class="eq-wrap">
+        $$w_i(\mathbf{r}) = \frac{1}{|\mathbf{r} - \mathbf{r}_i|}\,e^{-jk|\mathbf{r}-\mathbf{r}_i|}$$
+        <div class="eq-note">Range and direction are recovered simultaneously from the 2D peak of $P(\mathbf{r}) = \mathbf{w}^H(\mathbf{r})\,\mathbf{R}\,\mathbf{w}(\mathbf{r})$.</div>
+      </div>
+      <div class="rcard-grid">
+        <div class="rcard"><div class="rcard-v">0°</div><div class="rcard-l">Estimated DoA</div></div>
+        <div class="rcard"><div class="rcard-v">0.98 m</div><div class="rcard-l">Source range</div></div>
+        <div class="rcard"><div class="rcard-v">±60°</div><div class="rcard-l">Sidelobes suppressed by time-gating</div></div>
+        <div class="rcard"><div class="rcard-v">12.3 m</div><div class="rcard-l">Fraunhofer distance</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LAB II -->
+<div class="modal-bg" id="m-l2">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div class="modal-top-text">
+        <div class="modal-kicker">Lab II · 16 December 2025</div>
+        <h2>Passive Imaging — Scattering Cylinder</h2>
+        <p>32-microphone circular array, ambient noise cross-correlation, DAS (TFM) beamforming, differential imaging, and geometry optimization.</p>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('l2')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="pdf-zone">
+        <div class="pdf-zone-label">Report PDF</div>
+        <div class="pdf-frame-wrap" id="pfw-l2">
+          <div class="pdf-fn">Lab_II_Passive_Imaging.pdf</div>
+          <div class="pdf-note-txt">Upload your PDF here for inline preview.</div>
+          <button class="upload-btn" onclick="document.getElementById('pfi-l2').click()">Choose PDF file</button>
+          <input class="pdf-file-in" type="file" accept=".pdf" id="pfi-l2" onchange="loadPDF(this,'l2')">
+        </div>
+      </div>
+
+      <p class="theory-text"><strong>Lobkis-Weaver theorem.</strong> For two receivers recording $y_i(t)$ and $y_j(t)$ in a perfectly diffuse field, energy-normalised cross-correlation in the frequency domain yields</p>
+      <div class="eq-wrap">
+        $$\langle C_{ij}(\tau)\rangle = \mathcal{F}^{-1}\!\left\{\frac{\widetilde{y}_i(\omega)\,\widetilde{y}_j^*(\omega)}{\sqrt{E_i E_j}}\right\}$$
+        <div class="eq-note">Taking the time derivative recovers the causal Green's function: $\;\partial_\tau\langle C_{ij}\rangle \approx -G(\mathbf{r}_i,\mathbf{r}_j,\tau) + G(\mathbf{r}_j,\mathbf{r}_i,-\tau)$.</div>
+      </div>
+      <p class="theory-text">The DAS image at grid point $(x,y)$ sums the Green's function sampled at the two-way travel time $\tau_{ij} = (d_i + d_j)/c$ across all sensor pairs:</p>
+      <div class="eq-wrap">
+        $$I(x,y) = \sum_{i=1}^{M}\sum_{j=1}^{M} \left|G\!\left(\mathbf{r}_i,\mathbf{r}_j,\,\frac{d_i+d_j}{c}\right)\right|$$
+        <div class="eq-note">Differential image: $I_{\text{diff}} = |I_{\text{cyl}} - I_{\text{empty}}|$ — removes static direct-path contributions between microphone pairs.</div>
+      </div>
+      <div class="rcard-grid">
+        <div class="rcard"><div class="rcard-v">32</div><div class="rcard-l">MEMS microphones</div></div>
+        <div class="rcard"><div class="rcard-v">50</div><div class="rcard-l">Noise realisations</div></div>
+        <div class="rcard"><div class="rcard-v">−3 cm</div><div class="rcard-l">Detected X offset</div></div>
+        <div class="rcard"><div class="rcard-v">2.44 cm</div><div class="rcard-l">Geometry fit MAE</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LAB III -->
+<div class="modal-bg" id="m-l3">
+  <div class="modal-box">
+    <div class="modal-top">
+      <div class="modal-top-text">
+        <div class="modal-kicker">Lab III · 2025</div>
+        <h2>Full Waveform Inversion</h2>
+        <p>Adjoint-state gradient, Helmholtz 2D forward solver, sensitivity kernels, multi-scale strategy, and noise robustness analysis.</p>
+      </div>
+      <button class="modal-close-btn" onclick="closeModal('l3')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="pdf-zone">
+        <div class="pdf-zone-label">Report PDF</div>
+        <div class="pdf-frame-wrap" id="pfw-l3">
+          <div class="pdf-fn">Lab_III_FWI_Adjoint.pdf</div>
+          <div class="pdf-note-txt">Upload your PDF here for inline preview.</div>
+          <button class="upload-btn" onclick="document.getElementById('pfi-l3').click()">Choose PDF file</button>
+          <input class="pdf-file-in" type="file" accept=".pdf" id="pfi-l3" onchange="loadPDF(this,'l3')">
+        </div>
+      </div>
+
+      <p class="theory-text"><strong>Misfit functional.</strong> FWI minimises the $\ell^2$ norm of the data residual over all sources $s$ and frequencies $\omega$:</p>
+      <div class="eq-wrap">
+        $$J(m) = \frac{1}{2}\sum_{s}\bigl\|d_s^{\text{obs}} - d_s^{\text{calc}}(m)\bigr\|^2$$
+        <div class="eq-note">$m = 1/c^2$ is the squared slowness. The Helmholtz equation $(\nabla^2 + \omega^2 m)\,u = b$ governs the forward wavefield $u$.</div>
+      </div>
+      <p class="theory-text"><strong>Adjoint-state gradient.</strong> The gradient is the zero-lag cross-correlation of forward and adjoint wavefields — computed at the cost of just two additional forward solves per source:</p>
+      <div class="eq-wrap">
+        $$\frac{\partial J}{\partial m}\bigg|_\mathbf{x} = \sum_{\omega,s} \omega^2\,\operatorname{Re}\!\bigl[u_s(\mathbf{x},\omega)\cdot q_s^*(\mathbf{x},\omega)\bigr]$$
+        <div class="eq-note">The adjoint source is the data residual $b_q = \mathbf{E}_{\text{rec}}\bigl(u|_{\text{rec}} - d^{\text{obs}}\bigr)$; the adjoint wavefield $q$ is solved with the transposed system $\mathbf{A}^T q = b_q$.</div>
+      </div>
+      <div class="rcard-grid">
+        <div class="rcard"><div class="rcard-v">±10 %</div><div class="rcard-l">Velocity perturbation</div></div>
+        <div class="rcard"><div class="rcard-v">Monotonic</div><div class="rcard-l">Cost convergence</div></div>
+        <div class="rcard"><div class="rcard-v">Multi-scale</div><div class="rcard-l">Frequency strategy</div></div>
+        <div class="rcard"><div class="rcard-v">Tikhonov</div><div class="rcard-l">Regularisation</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(id){
+  document.getElementById('m-'+id).classList.add('open');
+  document.body.style.overflow='hidden';
+  if(window.MathJax) MathJax.typesetPromise();
+}
+function closeModal(id){
+  document.getElementById('m-'+id).classList.remove('open');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.modal-bg').forEach(m=>{
+  m.addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');document.body.style.overflow='';}});
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal-bg.open').forEach(m=>{m.classList.remove('open')});document.body.style.overflow='';}});
+
+function loadPDF(inp,id){
+  const f=inp.files[0];if(!f)return;
+  const url=URL.createObjectURL(f);
+  document.getElementById('pfw-'+id).innerHTML='<iframe class="pdf-embedded" src="'+url+'"></iframe>';
+}
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  if(id==='bf') drawBF();
+  else if(id==='cc') drawCC();
+  else drawFWI();
+}
+
+/* ===== BEAMFORMING ===== */
+function drawBF(){
+  const N=+document.getElementById('bN').value;
+  const f=+document.getElementById('bF').value;
+  const d=+document.getElementById('bD').value/100;
+  document.getElementById('bNv').textContent=N;
+  document.getElementById('bFv').textContent=f.toFixed(1)+' kHz';
+  document.getElementById('bDv').textContent=(d*100).toFixed(1)+' cm';
+  const c=343,k=2*Math.PI*f*1000/c;
+  const cv=document.getElementById('cvBF');
+  const ctx=cv.getContext('2d');
+  cv.width=cv.offsetWidth*2;cv.height=cv.offsetHeight*2;ctx.scale(2,2);
+  const W=cv.offsetWidth/2,H=cv.offsetHeight/2;
+  ctx.clearRect(0,0,W,H);
+  const pts=[],pd=[];
+  for(let t=-90;t<=90;t+=0.4){
+    const r=t*Math.PI/180;let re=0,im=0;
+    for(let i=0;i<N;i++){re+=Math.cos(-k*d*i*Math.sin(r));im+=Math.sin(-k*d*i*Math.sin(r));}
+    pts.push(t);pd.push(re*re+im*im);
+  }
+  const mx=Math.max(...pd);
+  const db=pd.map(v=>10*Math.log10(v/mx+1e-10));
+  const lo=-40;
+  ctx.strokeStyle='rgba(26,26,24,0.06)';ctx.lineWidth=0.5;
+  [-10,-20,-30,-40].forEach(g=>{
+    const y=H-(g-lo)/(0-lo)*H;
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+    ctx.fillStyle='rgba(138,138,132,0.7)';ctx.font='8px IBM Plex Mono,monospace';
+    ctx.fillText(g+' dB',3,y-2);
+  });
+  ctx.strokeStyle='#c0392b';ctx.lineWidth=1.5;ctx.beginPath();
+  pts.forEach((t,i)=>{
+    const x=(t+90)/180*W,y=H-(db[i]-lo)/(0-lo)*H;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });ctx.stroke();
+  ctx.strokeStyle='rgba(26,26,24,0.2)';ctx.lineWidth=0.5;
+  ctx.beginPath();ctx.moveTo(W/2,0);ctx.lineTo(W/2,H);ctx.stroke();
+  const lam=c/(f*1000),L=(N-1)*d;
+  const bw=2*Math.asin(Math.min(1,0.886*lam/L))*180/Math.PI;
+  const gl=d>lam/2?'grating lobes present (d > λ/2)':'no grating lobes';
+  document.getElementById('rdBF').textContent=
+    `λ = ${(lam*100).toFixed(1)} cm  ·  aperture L = ${(L*100).toFixed(1)} cm  ·  −3 dB beamwidth ≈ ${bw.toFixed(1)}°  ·  ${gl}`;
+}
+window.addEventListener('load',drawBF);
+
+/* ===== CROSS-CORRELATION ===== */
+function drawCC(){
+  const nr=+document.getElementById('cN').value;
+  const dist=+document.getElementById('cD').value;
+  document.getElementById('cNv').textContent=nr;
+  document.getElementById('cDv').textContent=dist.toFixed(2)+' m';
+  const c=343,tof=dist/c,fs=97656,ns=512;
+  const snr=Math.sqrt(nr),sig=1/snr;
+  const tarr=Array.from({length:ns},(_,i)=>(i-ns/2)/fs*1000);
+  const s=tarr.map(t=>{
+    const tau=t/1000;
+    return Math.exp(-Math.pow(tau-tof,2)/(2*Math.pow(0.15e-3,2)))*Math.cos(2*Math.PI*4000*(tau-tof))
+           +sig*(Math.random()-0.5)*2;
+  });
+  const vm=Math.max(...s.map(Math.abs));
+  const cv=document.getElementById('cvCC');
+  const ctx=cv.getContext('2d');
+  cv.width=cv.offsetWidth*2;cv.height=cv.offsetHeight*2;ctx.scale(2,2);
+  const W=cv.offsetWidth/2,H=cv.offsetHeight/2;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(26,26,24,0.08)';ctx.lineWidth=0.5;
+  ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
+  ctx.strokeStyle='#1a6b5a';ctx.lineWidth=1.5;ctx.beginPath();
+  s.forEach((v,i)=>{
+    const x=i/ns*W,y=H/2-(v/vm)*(H/2-8);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });ctx.stroke();
+  const tofms=(tof*1000);
+  const pi=Math.round((tofms-tarr[0])/(tarr[tarr.length-1]-tarr[0])*W);
+  ctx.strokeStyle='rgba(181,98,10,0.5)';ctx.setLineDash([4,3]);ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(pi,8);ctx.lineTo(pi,H-8);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(181,98,10,0.8)';ctx.font='8px IBM Plex Mono,monospace';
+  ctx.fillText('τ₀ = '+tofms.toFixed(2)+' ms',pi+4,18);
+  document.getElementById('rdCC').textContent=
+    `τ₀ = r/c = ${tofms.toFixed(2)} ms  ·  SNR gain ≈ √${nr} = ${snr.toFixed(1)}×  ·  noise level σ = ${(1/snr).toFixed(3)}`;
+}
+
+/* ===== FWI ===== */
+function drawFWI(){
+  const dv=+document.getElementById('fV').value;
+  const ns=+document.getElementById('fS').value;
+  const sign=dv>=0?'+':'';
+  document.getElementById('fVv').textContent=sign+dv+' %';
+  document.getElementById('fSv').textContent=ns.toFixed(2);
+  const ni=40,alpha=0.3;
+  const j0=Math.pow(dv/10,2)*0.8+ns*0.4+0.06;
+  const floor=ns*0.25;
+  const its=Array.from({length:ni+1},(_,i)=>{
+    const d=Math.exp(-alpha*i);
+    return j0*d+floor*(1-d)+Math.random()*ns*0.04;
+  });
+  const jmax=Math.max(...its);
+  const cv=document.getElementById('cvFWI');
+  const ctx=cv.getContext('2d');
+  cv.width=cv.offsetWidth*2;cv.height=cv.offsetHeight*2;ctx.scale(2,2);
+  const W=cv.offsetWidth/2,H=cv.offsetHeight/2;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='rgba(26,26,24,0.06)';ctx.lineWidth=0.5;
+  [0.25,0.5,0.75].forEach(g=>{
+    const y=H-g*(H-16)-8;
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+  });
+  ctx.strokeStyle='#b5620a';ctx.lineWidth=2;ctx.beginPath();
+  its.forEach((v,i)=>{
+    const x=i/ni*W,y=H-8-(v/jmax)*(H-24);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  });ctx.stroke();
+  ctx.fillStyle='rgba(138,138,132,0.6)';ctx.font='8px IBM Plex Mono,monospace';
+  ctx.fillText('J(m)',4,14);ctx.fillText('iter 0',2,H-4);ctx.fillText('iter '+ni,W-36,H-4);
+  const red=((1-its[ni]/j0)*100).toFixed(0);
+  document.getElementById('rdFWI').textContent=
+    `J₀ = ${j0.toFixed(3)}  ·  J_final ≈ ${its[ni].toFixed(3)}  ·  reduction ${red}%  ·  noise floor ≈ ${floor.toFixed(3)}`;
+}
+</script>
+</body>
+</html>
